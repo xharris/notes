@@ -1,0 +1,49 @@
+.tasklist {
+  ul {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    padding-bottom: 4px;
+  }
+
+  &__text {
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    background: none;
+    border: none;
+    outline: none;
+    line-height: 14px;
+    margin-left: 4px;
+    font-size: 0.8rem;
+  }
+
+  &__item--checked &__text {
+    text-decoration: line-through;
+  }
+
+  &__item--new > &__icon {
+    opacity: 0.2;
+  }
+
+  input[type='checkbox'] {
+    display: none;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+  }
+
+  &__icon {
+    width: 16px;
+    height: 16px;
+  }
+}

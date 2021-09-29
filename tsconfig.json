@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "outDir": "./bundle/",
+    "noImplicitAny": true,
+    "module": "esnext",
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "paths": {
+      "component": ["src/component"],
+      "component/*": [
+        "src/component/*"
+      ],
+      "style": ["src/style"],
+      "style/*": [
+        "src/style/*"
+      ],
+      "ui": ["src/ui"],
+      "ui/*": [
+        "src/ui/*"
+      ],
+    }
+  },
+  "exclude": [
+      "node_modules",
+      "public"
+  ],
+}

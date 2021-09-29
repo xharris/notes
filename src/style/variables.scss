@@ -1,0 +1,28 @@
+@use "sass:color";
+
+@mixin text-outline($color) {
+  text-shadow: 0px 0px 2px $color, 0px 0px 2px $color, 0px 0px 2px $color,
+    0px 0px 1px $color, 0px 0px 1px $color, 0px 0px 1px $color,
+    0px 0px 1px $color, 0px 0px 1px $color, 0px 0px 1px $color;
+}
+
+@mixin filter-outline($color) {
+  filter: drop-shadow(0px 0px 3px $color);
+}
+
+@mixin statcolor($svg-color, $text-color) {
+  > svg {
+    stroke: $svg-color;
+  }
+  > p {
+    color: $text-color;
+  }
+}
+
+$padding: 24px;
+$border-radius: 7px;
+$box-shadow-color: color.adjust(#212121, $alpha: -0.85);
+$border-color: color.adjust(#212121, $alpha: -0.9);
+$footer-height: 55px;
+$bg: #eeeeee;
+$card-bg: #fafafa;

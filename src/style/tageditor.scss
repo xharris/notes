@@ -1,0 +1,64 @@
+@import 'variables';
+
+.tageditor {
+  min-width: 120px;
+  padding: $padding;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: flex-start;
+
+  &__controls {
+    display: flex;
+    gap: 5px;
+
+    > .uibutton {
+      background: transparent;
+    }
+  }
+
+  &__tags {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-start;
+  }
+
+  &__tag-form {
+    .uiform {
+      &__wrapper {
+        display: flex;
+        gap: 5px;
+      }
+
+      &__input {
+        width: 90px;
+        font-size: 0.75rem;
+        background: rgba(255, 255, 255, 0.75);
+        padding: 0px 4px;
+
+        &[type='text'] {
+        }
+
+        &[type='color'] {
+        }
+      }
+
+      &__colortrigger {
+        margin: 2px;
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  &__tag-delete {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 0px 4px;
+
+    .uiicon {
+      width: 0.8rem;
+      height: 0.8rem;
+    }
+  }
+}

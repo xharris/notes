@@ -1,0 +1,27 @@
+.tag {
+  display: inline-flex;
+  justify-content: center;
+  padding: 2px 5px;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  align-items: center;
+  gap: 3px;
+
+  > p {
+    margin: 0px;
+  }
+
+  > .uiicon {
+    width: 16px;
+    height: 16px;
+  }
+
+  > p + .uiicon {
+    padding-left: 3px;
+  }
+
+  &__delete-btn {
+    height: 0px;
+    padding: 0px;
+  }
+}

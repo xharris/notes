@@ -1,0 +1,62 @@
+@use "sass:math";
+
+$mobile: 400px;
+$phablet: 550px;
+$tablet: 750px;
+$desktop: 1000px;
+$desktop-hd: 1200px;
+
+.row {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  max-width: 960px;
+  box-sizing: border-box;
+
+  @media (max-width: $phablet) {
+    flex-wrap: wrap;
+  }
+
+  @mixin row-flex($i) {
+    flex: 0 1 (math.div(100%, 12) * $i);
+  }
+  @for $c from 1 through 12 {
+    > .col-#{$c} {
+      @include row-flex($c);
+
+      @media (max-width: $phablet) {
+        flex: 0 1 100%;
+      }
+    }
+  }
+  .col {
+    flex: 0 1 100%;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.6rem;
+}
+h1 {
+  font-size: 5rem;
+}
+h2 {
+  font-size: 4.2rem;
+}
+h3 {
+  font-size: 3.6rem;
+}
+h4 {
+  font-size: 3rem;
+}
+h5 {
+  font-size: 2.4rem;
+}
+h6 {
+  font-size: 1.5rem;
+}

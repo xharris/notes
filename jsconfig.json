@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src/",
+    "allowSyntheticDefaultImports": true,
+    "module": "es6",
+    "paths": {
+      "component": ["src/component"],
+      "component/*": [
+        "src/component/*"
+      ],
+      "style": ["src/style"],
+      "style/*": [
+        "src/style/*"
+      ],
+      "ui": ["src/ui"],
+      "ui/*": [
+        "src/ui/*"
+      ],
+    }
+  },
+  "exclude": [
+      "node_modules",
+      "public"
+  ]
+}

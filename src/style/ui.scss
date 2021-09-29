@@ -1,0 +1,105 @@
+@import 'variables';
+
+.uibutton {
+  background: white;
+  border: none;
+  padding: 2px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  > svg {
+    width: 1rem;
+    color: #616161;
+    margin: 0px 2px;
+  }
+
+  > p {
+    margin: 0px;
+  }
+}
+
+.uiinput {
+  display: flex;
+  // background-color: #e0e0e0;
+  border-radius: $border-radius;
+  overflow: hidden;
+  background: #eceff1;
+  box-shadow: 0px 0px 5px 0px $box-shadow-color;
+  border: 1px solid $border-color;
+
+  > .uiicon {
+    opacity: 0.25;
+  }
+
+  &__input {
+    flex: 1;
+    border: none;
+    background-color: transparent; // #e0e0e0;
+    padding: 0px 10px;
+    font-size: 1rem;
+  }
+
+  &__select-input {
+    border: none;
+    background: transparent;
+  }
+}
+
+.uiform {
+  display: flex;
+
+  &__label {
+    margin: 0px;
+  }
+
+  &__input {
+    border: none;
+    background-color: #e0e0e0;
+    padding: 0px 10px;
+    font-size: 1rem;
+  }
+
+  &__input[type='checkbox'] {
+    display: none;
+  }
+
+  &__input:checked ~ &__checkbox-icon--checked-false {
+    display: none;
+  }
+  &__input:not(:checked) ~ &__checkbox-icon--checked-true {
+    display: none;
+  }
+
+  &__checkbox-icon {
+    width: 19px;
+    height: 19px;
+    color: #212121;
+  }
+
+  &__wrapper--type-color {
+    position: relative;
+  }
+
+  &__colortrigger {
+    height: 20px;
+    width: 20px;
+    border: 1px solid black;
+  }
+
+  &__colorpicker {
+    position: absolute;
+    z-index: 20;
+    top: 100%;
+    left: -7px;
+  }
+
+  &__clickout {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+  }
+}

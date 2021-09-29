@@ -1,0 +1,29 @@
+@import 'variables';
+
+.page {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  &__addcard-btn {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    margin: $padding;
+    box-shadow: 2px 2px 8px 0px $box-shadow-color;
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  &__cards {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    align-items: flex-start;
+    overflow: auto;
+    padding: $padding;
+    box-sizing: border-box;
+  }
+}
