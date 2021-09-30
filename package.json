@@ -28,6 +28,7 @@
     "@types/pouchdb": "^6.4.0",
     "@types/pouchdb-find": "^6.3.7",
     "@types/react": "^17.0.19",
+    "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-color": "^3.0.5",
     "@types/react-router-dom": "^5.1.9",
     "@types/tinycolor2": "^1.4.3",

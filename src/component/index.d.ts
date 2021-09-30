@@ -26,6 +26,7 @@ type Card = DBDoc & {
 type Tag = DBDoc & {
   value?: string
   color?: string
+  index: number
 }
 
 type Block = {

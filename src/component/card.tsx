@@ -7,6 +7,7 @@ import Tasklist from './cards/tasklist'
 import { nanoid } from 'nanoid'
 import { useAppContext } from './context'
 import { Tag } from './tag'
+import { Droppable } from 'react-beautiful-dnd'
 
 const style = bem('card')
 
@@ -86,142 +87,146 @@ export const Card = ({
   if (!doc) return null
 
   return (
-    <div
-      className={style({ editing, nosections: sections.length === 0 })}
-      onDragOver={(e) => {
-        e.preventDefault()
-      }}
-      onDrop={(e) => {
-        const tdoc = JSON.parse(e.dataTransfer.getData('text/plain') || '')
-        if (tdoc && tdoc._collection === 'tag') {
-          console.log(tdoc)
-          update('card', _id, {
-            tags: [...doc.tags.filter((t) => t !== tdoc._id), tdoc._id],
-          })
-        }
-      }}
-    >
-      <div className={style('content')}>
-        {editing ? (
-          <input
-            placeholder="Title"
-            className={style('title')}
-            onChange={(e) =>
-              db &&
-              db.table('card').where({ _id }).modify({ title: e.target.value })
-            }
-            defaultValue={doc.title}
-          />
-        ) : (
-          doc.title &&
-          doc.title.length > 0 && <p className={style('title')}>{doc.title}</p>
-        )}
-        <div className={style('sections')}>
-          {sections.map((sec) => {
-            if (sec.type in blocks) {
-              const SectionComponent = editing
-                ? blocks[sec.type].component
-                : blocks[sec.type].preview
-              return (
-                <div className={style('section')}>
-                  {editing ? (
-                    <input
-                      placeholder="Subtitle"
-                      className={style('subtitle')}
-                      defaultValue={sec.title}
-                      onChange={(e) =>
-                        updateSection({
-                          ...sec,
-                          _id: sec._id,
-                          title: e.currentTarget.value,
-                        })
+    <Droppable droppableId={`card|${_id}`}>
+      {(provided, snapshot) => (
+        <div {...provided.droppableProps} ref={provided.innerRef}>
+          <div
+            className={style({ editing, nosections: sections.length === 0 })}
+          >
+            <div className={style('content')}>
+              {editing ? (
+                <input
+                  placeholder="Title"
+                  className={style('title')}
+                  onChange={(e) =>
+                    db &&
+                    db
+                      .table('card')
+                      .where({ _id })
+                      .modify({ title: e.target.value })
+                  }
+                  defaultValue={doc.title}
+                />
+              ) : (
+                doc.title &&
+                doc.title.length > 0 && (
+                  <p className={style('title')}>{doc.title}</p>
+                )
+              )}
+              <div className={style('sections')}>
+                {sections.map((sec) => {
+                  if (sec.type in blocks) {
+                    const SectionComponent = editing
+                      ? blocks[sec.type].component
+                      : blocks[sec.type].preview
+                    return (
+                      <div className={style('section')}>
+                        {editing ? (
+                          <input
+                            placeholder="Subtitle"
+                            className={style('subtitle')}
+                            defaultValue={sec.title}
+                            onChange={(e) =>
+                              updateSection({
+                                ...sec,
+                                _id: sec._id,
+                                title: e.currentTarget.value,
+                              })
+                            }
+                          />
+                        ) : (
+                          sec.title &&
+                          sec.title.length > 0 && (
+                            <p className={style('subtitle')}>{sec.title}</p>
+                          )
+                        )}
+                        <SectionComponent {...sec} update={updateSection} />
+                      </div>
+                    )
+                  }
+                })}
+              </div>
+              {doc.tags.length > 0 && (
+                <div className={style('tags')}>
+                  {doctags.map((tag) => (
+                    <Tag
+                      value={tag.value}
+                      color={tag.color}
+                      onDelete={
+                        editing
+                          ? () => {
+                              update('card', _id, {
+                                tags: doc.tags.filter((t) => t !== tag._id),
+                              })
+                            }
+                          : null
                       }
                     />
-                  ) : (
-                    sec.title &&
-                    sec.title.length > 0 && (
-                      <p className={style('subtitle')}>{sec.title}</p>
-                    )
-                  )}
-                  <SectionComponent {...sec} update={updateSection} />
+                  ))}
                 </div>
-              )
-            }
-          })}
-        </div>
-        {doc.tags.length > 0 && (
-          <div className={style('tags')}>
-            {doctags.map((tag) => (
-              <Tag
-                value={tag.value}
-                color={tag.color}
-                onDelete={
-                  editing
-                    ? () => {
-                        update('card', _id, {
-                          tags: doc.tags.filter((t) => t !== tag._id),
-                        })
-                      }
-                    : null
-                }
-              />
-            ))}
-          </div>
-        )}
-        {editing && (
-          <div className={style('footer')}>
-            <div>{/* filler */}</div>
-            {editing && (
+              )}
+              {provided.placeholder}
+              {editing && (
+                <div className={style('footer')}>
+                  <div>{/* filler */}</div>
+                  {editing && (
+                    <Button
+                      className={style('add-btn')}
+                      icon="plus"
+                      onClick={() => setShowSectionDialog(true)}
+                    />
+                  )}
+                </div>
+              )}
+            </div>
+            <div className={style('corner-buttons')}>
+              {!editing && (
+                <Button
+                  icon="trash"
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        'Are you sure you want to delete this card?'
+                      )
+                    )
+                      db.table('card').delete(_id)
+                  }}
+                  round
+                />
+              )}
               <Button
-                className={style('add-btn')}
-                icon="plus"
-                onClick={() => setShowSectionDialog(true)}
+                icon={editing ? 'x' : 'edit-2'}
+                onClick={() => (editing ? onClose() : onEdit())}
+                round
               />
-            )}
+            </div>
+            <Dialog
+              open={showSectionDialog}
+              onClose={() => setShowSectionDialog(false)}
+            >
+              <div className={style('dlg-choices')}>
+                {Object.values(blocks).map((block) => (
+                  <Button
+                    icon={block.icon}
+                    text={block.name}
+                    onClick={() => {
+                      create('section', {
+                        ...block.template,
+                        type: block.name,
+                      }).then((secid) => {
+                        update('card', _id, {
+                          sections: [...doc.sections, secid],
+                        })
+                        setShowSectionDialog(false)
+                      })
+                    }}
+                  />
+                ))}
+              </div>
+            </Dialog>
           </div>
-        )}
-      </div>
-      <div className={style('corner-buttons')}>
-        {!editing && (
-          <Button
-            icon="trash"
-            onClick={() => {
-              if (window.confirm('Are you sure you want to delete this card?'))
-                db.table('card').delete(_id)
-            }}
-            round
-          />
-        )}
-        <Button
-          icon={editing ? 'x' : 'edit-2'}
-          onClick={() => (editing ? onClose() : onEdit())}
-          round
-        />
-      </div>
-      <Dialog
-        open={showSectionDialog}
-        onClose={() => setShowSectionDialog(false)}
-      >
-        <div className={style('dlg-choices')}>
-          {Object.values(blocks).map((block) => (
-            <Button
-              icon={block.icon}
-              text={block.name}
-              onClick={() => {
-                create('section', {
-                  ...block.template,
-                  type: block.name,
-                }).then((secid) => {
-                  update('card', _id, {
-                    sections: [...doc.sections, secid],
-                  })
-                  setShowSectionDialog(false)
-                })
-              }}
-            />
-          ))}
         </div>
-      </Dialog>
-    </div>
+      )}
+    </Droppable>
   )
 }

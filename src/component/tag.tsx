@@ -23,6 +23,7 @@ export const Tag = ({
   value,
   draggable,
   onDelete,
+  className,
   ...props
 }: ITag) => {
   return (
@@ -33,7 +34,8 @@ export const Tag = ({
         css({
           color: color(_color, 'fg'),
           backgroundColor: color(_color, 'bg'),
-        })
+        }),
+        className
       )}
       draggable={!!draggable}
       onDragStart={(e) => {

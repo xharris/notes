@@ -322,4 +322,22 @@ export const throttle = <T extends Array<any>, U>(
   }
 }
 
+// https://stackoverflow.com/a/5306832
+export const arrayMove = (arr: any[], old_idx: number, new_idx: number) => {
+  while (old_idx < 0) {
+    old_idx += arr.length
+  }
+  while (new_idx < 0) {
+    new_idx += arr.length
+  }
+  if (new_idx >= arr.length) {
+    var k = new_idx - arr.length + 1
+    while (k--) {
+      arr.push(undefined)
+    }
+  }
+  arr.splice(new_idx, 0, arr.splice(old_idx, 1)[0])
+  return arr // for testing purposes
+}
+
 export { css, cx }
