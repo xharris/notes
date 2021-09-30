@@ -53,7 +53,7 @@ export const AppContextProvider = (props: { children: ReactNode }) => {
                 ...(collection === 'section'
                   ? { title: '' }
                   : collection === 'card'
-                  ? { title: '', sections: [], tags: [] }
+                  ? { title: '', content: '', tags: [] }
                   : collection === 'tag'
                   ? { value: '', color: 'blue_grey' }
                   : {}),

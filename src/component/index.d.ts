@@ -19,7 +19,7 @@ type Section = DBDoc & {
 
 type Card = DBDoc & {
   title: string
-  sections: ObjectAny[]
+  content: string
   tags: string[]
 }
 

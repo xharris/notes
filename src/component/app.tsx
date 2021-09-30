@@ -18,7 +18,8 @@ const style = bem('app')
 
 const AppBody = () => {
   const { db, update } = useAppContext()
-  const [showTagEditor, setShowTagEditor] = useState(true)
+  const [showTagEditor, setShowTagEditor] = useState(false)
+  const [editing, setEditing] = useState<string>()
 
   return (
     <DragDropContext
@@ -62,7 +63,7 @@ const AppBody = () => {
         }
       }}
     >
-      <div className={style()}>
+      <div className={style({ editing: !!editing })}>
         {/* <Nav /> */}
         <div className={style('nav')}>
           <Button
@@ -71,11 +72,15 @@ const AppBody = () => {
               border: `1px solid ${showTagEditor ? '#BDBDBD' : 'transparent'}`,
             })}
             onClick={() => setShowTagEditor(!showTagEditor)}
+            round
           />
+          {editing && (
+            <Button icon="x" onClick={() => setEditing(null)} round />
+          )}
         </div>
         <div className={style('content')}>
           {showTagEditor && <TagEditor />}
-          <Page />
+          <Page editing={editing} onEditCard={setEditing} />
         </div>
       </div>
     </DragDropContext>

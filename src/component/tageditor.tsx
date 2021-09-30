@@ -37,75 +37,77 @@ export const TagEditor = () => {
       </div>
       <Droppable droppableId="tag-container">
         {(provided, snapshot) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
-            <div className={style('tags', { editing })}>
-              {tags
-                .sort((a, b) => a.index - b.index)
-                .map((tag, i) =>
-                  editing ? (
-                    <Form
-                      className={cx(
-                        style('tag-form'),
-                        css({
-                          backgroundColor: color(tag.color, 'bg'),
-                        })
-                      )}
-                      defaultValue={tag}
-                      onChange={(e, name) => {
-                        if (db)
-                          db.table('tag')
-                            .where({ _id: tag._id })
-                            .modify({ [name]: e.currentTarget.value })
-                      }}
-                    >
-                      <Button
-                        className={style('tag-delete')}
-                        icon="trash"
-                        onClick={() => {
-                          if (
-                            db &&
-                            window.confirm(
-                              `Are you sure you want to delete tag '${tag.value}'?`
-                            )
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            className={style('tags', { editing })}
+          >
+            {tags
+              .sort((a, b) => a.index - b.index)
+              .map((tag, i) =>
+                editing ? (
+                  <Form
+                    className={cx(
+                      style('tag-form'),
+                      css({
+                        backgroundColor: color(tag.color, 'bg'),
+                      })
+                    )}
+                    defaultValue={tag}
+                    onChange={(e, name) => {
+                      if (db)
+                        db.table('tag')
+                          .where({ _id: tag._id })
+                          .modify({ [name]: e.currentTarget.value })
+                    }}
+                  >
+                    <Button
+                      className={style('tag-delete')}
+                      icon="trash"
+                      onClick={() => {
+                        if (
+                          db &&
+                          window.confirm(
+                            `Are you sure you want to delete tag '${tag.value}'?`
                           )
-                            db.table('tag')
-                              .delete(tag._id)
-                              .then(() =>
-                                db
-                                  .table('card')
-                                  .where('tags')
-                                  .equals(tag._id)
-                                  .modify((card) => {
-                                    card.tags = card.tags.filter(
-                                      (t: string) => t !== tag._id
-                                    )
-                                  })
-                              )
-                        }}
-                      />
-                      <Input name="value" type="text" />
-                      <Input name="color" type="color" colors="bg" />
-                    </Form>
-                  ) : (
-                    <Draggable
-                      key={tag._id}
-                      draggableId={`tag|${tag._id}`}
-                      index={i}
-                    >
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          style={provided.draggableProps.style}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <Tag value={tag.value} color={tag.color} />
-                        </div>
-                      )}
-                    </Draggable>
-                  )
-                )}
-            </div>
+                        )
+                          db.table('tag')
+                            .delete(tag._id)
+                            .then(() =>
+                              db
+                                .table('card')
+                                .where('tags')
+                                .equals(tag._id)
+                                .modify((card) => {
+                                  card.tags = card.tags.filter(
+                                    (t: string) => t !== tag._id
+                                  )
+                                })
+                            )
+                      }}
+                    />
+                    <Input name="value" type="text" />
+                    <Input name="color" type="color" colors="bg" />
+                  </Form>
+                ) : (
+                  <Draggable
+                    key={tag._id}
+                    draggableId={`tag|${tag._id}`}
+                    index={i}
+                  >
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        style={provided.draggableProps.style}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <Tag value={tag.value} color={tag.color} />
+                      </div>
+                    )}
+                  </Draggable>
+                )
+              )}
             {provided.placeholder}
           </div>
         )}

@@ -25,5 +25,21 @@
     overflow: auto;
     padding: $padding;
     box-sizing: border-box;
+    padding-top: $padding + 45px;
+  }
+
+  &__masonry {
+    display: flex;
+    padding: $padding;
+    padding-top: $padding + 45px;
+    box-sizing: border-box;
+    gap: 20px;
+  }
+
+  &__column {
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
 }
