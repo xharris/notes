@@ -68,7 +68,7 @@ export const Card = ({
         >
           {editing && <Tags />}
           <div className={style('content')}>
-            {editing ? (
+            {/* {editing ? (
               <input
                 placeholder="Title"
                 className={style('title')}
@@ -86,7 +86,7 @@ export const Card = ({
               doc.title.length > 0 && (
                 <p className={style('title')}>{doc.title}</p>
               )
-            )}
+            )} */}
             {/* <div className={style('content')}> */}
             <Content
               cardid={_id}
@@ -96,19 +96,6 @@ export const Card = ({
             {/* </div> */}
             {!editing && <Tags />}
             {provided.placeholder}
-            {editing && (
-              <div className={style('footer')}>
-                <div>{/* filler */}</div>
-                {
-                  editing && null
-                  // <Button
-                  //   className={style('add-btn')}
-                  //   icon="plus"
-                  //   onClick={() => setShowSectionDialog(true)}
-                  // />
-                }
-              </div>
-            )}
           </div>
           <div className={style('corner-buttons')}>
             {!editing && (

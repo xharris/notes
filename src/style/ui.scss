@@ -3,7 +3,7 @@
 .uibutton {
   background: white;
   border: none;
-  padding: 2px 6px;
+  padding: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,6 +11,7 @@
 
   > svg {
     width: 1rem;
+    height: 1rem;
     color: #616161;
     margin: 0px 2px;
   }

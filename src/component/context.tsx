@@ -9,34 +9,65 @@ import React, {
   useCallback,
 } from 'react'
 import { ObjectAny } from 'ui'
-import PouchDB from 'pouchdb'
-import PouchFindDB from 'pouchdb-find'
 import { matchesSelector } from 'pouchdb-selector-core'
 import { Dexie, IndexableType } from 'dexie'
 import { useLiveQuery } from 'dexie-react-hooks'
-
-PouchDB.plugin(PouchFindDB)
+import {
+  NON_INDEXED_FIELDS,
+  applyEncryptionMiddleware,
+  clearAllTables,
+} from 'dexie-encrypted'
 
 const AppContext = createContext<{
   loaded: boolean
-  db?: Dexie
+  db?: NotesDatabase
   create?: <T>(collection: Collections, data?: T) => Promise<unknown>
   update?: <T>(collection: Collections, id: string, data?: T) => void
   useQuery?: <T>(querier: () => Promise<T>, dependencies?: any[]) => T
 }>({ loaded: false })
 
-export const AppContextProvider = (props: { children: ReactNode }) => {
-  const [db, setDb] = useState<Dexie>()
-  const [changes, setChanges] =
-    useState<PouchDB.Core.Changes<Card | Section | Tag>>()
+class NotesDatabase extends Dexie {
+  card: Dexie.Table<Card, string>
+  tag: Dexie.Table<Tag, string>
 
-  useEffect(() => {
-    const newdb = new Dexie('notes')
-    newdb.version(1).stores({
+  constructor() {
+    super('notes')
+    this.version(1).stores({
       card: '_id',
       section: '_id',
       tag: '_id',
     })
+    this.version(2).stores({
+      section: null,
+    })
+
+    this.card = this.table('card')
+    this.tag = this.table('tag')
+  }
+}
+
+export const AppContextProvider = (props: { children: ReactNode }) => {
+  const [db, setDb] = useState<NotesDatabase>()
+
+  useEffect(() => {
+    const newdb = new NotesDatabase()
+    // generate the correct length key (32)
+    let key = process.env.REACT_KEY
+    let i = 1
+    let len = key.length
+    while (new TextEncoder().encode(key).length < 32) {
+      key += key[(i++ % len) - 1]
+    }
+    applyEncryptionMiddleware(
+      newdb,
+      new TextEncoder().encode(key),
+      {
+        card: NON_INDEXED_FIELDS,
+        tag: NON_INDEXED_FIELDS,
+      },
+      (db) => clearAllTables(db)
+    )
+
     setDb(newdb)
   }, [])
 

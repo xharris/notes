@@ -23,6 +23,8 @@ import {
   Menu as MatMenu,
   MenuItem as MatMenuItem,
 } from '@material-ui/core'
+import * as FeatherIcon from 'react-icons/fi'
+import * as MaterialIcon from 'react-icons/md'
 
 // HTML
 
@@ -33,15 +35,31 @@ export type ReactChildren = (args: { tab: string }) => ReactNode | ReactNode
 interface IIcon extends HTMLAttributes<HTMLImageElement> {
   name: string
   color?: string
+  library?: string
 }
+type IconElement = { [key: string]: FIcon.Icon }
 const bss_icon = bem('uiicon')
-export const Icon: FC<IIcon> = ({ className, name, color, ...props }) => {
-  const IconElement = (FIcon as { [key: string]: FIcon.Icon })[
-    name
-      .split('-')
-      .map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase())
-      .join('')
-  ]
+
+const libraries: ObjectAny = {
+  feather: [FeatherIcon, 'fi'],
+  material: [MaterialIcon, 'md'],
+}
+
+export const Icon: FC<IIcon> = ({
+  className,
+  name,
+  color,
+  library = 'feather',
+  ...props
+}) => {
+  const lib = libraries[library] || [null, '']
+  const componentName = `${lib[1]}-${name}`
+    .split('-')
+    .map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase())
+    .join('')
+
+  const IconElement = (lib[0] as IconElement)[componentName]
+
   return (
     <IconElement
       className={cx(
@@ -63,6 +81,7 @@ interface IButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   color?: string
   round?: boolean | number
   transparent?: boolean
+  library?: string
 }
 const bss_button = bem('uibutton')
 export const Button: FC<IButton> = ({
@@ -73,6 +92,7 @@ export const Button: FC<IButton> = ({
   type = 'button',
   transparent,
   round,
+  library,
   ...props
 }) => (
   <button
@@ -104,7 +124,7 @@ export const Button: FC<IButton> = ({
     type={type}
     {...props}
   >
-    {icon ? <Icon name={icon} color={color} /> : null}
+    {icon ? <Icon name={icon} color={color} library={library} /> : null}
     {text ? <p>{text}</p> : null}
   </button>
 )

@@ -31,9 +31,24 @@ type BemBlockFn = (
 // fg: 900, bg: 100
 export const colors: { [key: string]: { [key: string]: string } } = {
   red: { fg: '#B71C1C', bg: '#FFCDD2' },
+  pink: { fg: '#880E4F', bg: '#F8BBD0' },
+  purple: { fg: '#4A148C', bg: '#E1BEE7' },
+  deep_purple: { fg: '#311B92', bg: '#D1C4E9' },
+  indigo: { fg: '#1A237E', bg: '#C5CAE9' },
+  blue: { fg: '#0D47A1', bg: '#BBDEFB' },
   light_blue: { fg: '#01579B', bg: '#B3E5FC' },
-  blue_grey: { fg: '#37474F' /* 800 */, bg: '#CFD8DC' },
+  cyan: { fg: '#006064', bg: '#B2EBF2' },
   teal: { fg: '#004D40', bg: '#B2DFDB' },
+  green: { fg: '#1B5E20', bg: '#C8E6C9' },
+  light_green: { fg: '#33691E', bg: '#DCEDC8' },
+  lime: { fg: '#33691E', bg: '#F0F4C3' },
+  yellow: { fg: '#F57F17', bg: '#FFF9C4' },
+  amber: { fg: '#FF6F00', bg: '#FFECB3' },
+  orange: { fg: '#E65100', bg: '#FFE0B2' },
+  deep_orange: { fg: '#BF360C', bg: '#FFCCBC' },
+  brown: { fg: '#3E2723', bg: '#D7CCC8' },
+  grey: { fg: '#212121', bg: '#F5F5F5' },
+  blue_grey: { fg: '#37474F' /* 800 */, bg: '#CFD8DC' },
 }
 
 export const color = (c: string, shade?: string) =>

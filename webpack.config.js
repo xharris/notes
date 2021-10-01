@@ -111,9 +111,9 @@ const settings = {
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: 'babel-loader?cacheDirectory',
-          options: {
-            presets: ['@babel/preset-env'],
-          },
+          // options: {
+          //   presets: ['@babel/preset-env'],
+          // },
         },
       },
     ],

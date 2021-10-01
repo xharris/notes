@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 
 // hot reload
@@ -18,10 +18,12 @@ const load = () => {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
+    frame: false,
     webPreferences: {
       devTools: env === 'development',
       nodeIntegration: true,
       contextIsolation: false,
+      enableRemoteModule: true,
     },
   })
   win.loadURL(
@@ -46,4 +48,17 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
+})
+
+ipcMain.on('minimize', (e) => {
+  BrowserWindow.getFocusedWindow().minimize()
+})
+
+ipcMain.on('toggle-maximize', (e) => {
+  const win = BrowserWindow.getFocusedWindow()
+  win.isMaximized() ? win.unmaximize() : win.maximize()
+})
+
+ipcMain.on('close', (e) => {
+  BrowserWindow.getFocusedWindow().close()
 })

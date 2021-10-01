@@ -52,6 +52,7 @@ body {
   position: relative;
   box-sizing: border-box;
   flex-direction: column;
+  overflow: hidden;
 
   transition: all ease-in-out 0.4s;
 
@@ -70,15 +71,14 @@ body {
     display: flex;
   }
 
-  &__nav {
-    padding: 0px $padding;
+  &__controls {
     display: flex;
-    box-sizing: border-box;
-    padding-top: 15px;
-    position: absolute;
-    top: 0px;
-    z-index: 10;
     justify-content: space-between;
+    padding: 0px 15px;
+    max-width: 1280px;
+    align-self: center;
+    width: 100%;
+    box-sizing: border-box;
 
     .uibutton {
       background: transparent; // rgba(255, 255, 255, 0.7);
@@ -88,6 +88,41 @@ body {
   }
 
   &--editing {
-    background-color: #fafafa;
+    background-color: $card-bg;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0px;
+    z-index: 10;
+    max-width: 100%;
+    background: linear-gradient(to bottom, $bg 15%, transparent 90%);
+
+    transition: all 0.4s ease-in-out;
+  }
+
+  &--editing &__nav {
+    background: linear-gradient(to bottom, $card-bg 15%, transparent 90%);
+  }
+
+  &__titlebar {
+    display: flex;
+    justify-content: space-between;
+    -webkit-app-region: drag;
+
+    > * {
+      -webkit-app-region: no-drag;
+    }
+
+    .uibutton {
+      background: none;
+    }
+  }
+
+  &__tbar-right {
+    display: flex;
   }
 }

@@ -13,13 +13,16 @@ import { Page } from './page'
 import { AppContextProvider, useAppContext } from './context'
 import { Button } from 'ui/react'
 import { DragDropContext } from 'react-beautiful-dnd'
+import { Electron } from 'ui/electron'
 
 const style = bem('app')
 
 const AppBody = () => {
-  const { db, update } = useAppContext()
+  const { db, update, useQuery } = useAppContext()
   const [showTagEditor, setShowTagEditor] = useState(false)
   const [editing, setEditing] = useState<string>()
+
+  // const settings = useQuery(() => db && db.table('settings'))
 
   return (
     <DragDropContext
@@ -66,17 +69,37 @@ const AppBody = () => {
       <div className={style({ editing: !!editing })}>
         {/* <Nav /> */}
         <div className={style('nav')}>
-          <Button
-            icon="hash"
-            className={css({
-              border: `1px solid ${showTagEditor ? '#BDBDBD' : 'transparent'}`,
-            })}
-            onClick={() => setShowTagEditor(!showTagEditor)}
-            round
-          />
-          {editing && (
-            <Button icon="x" onClick={() => setEditing(null)} round />
+          {process.env.REACT_ELECTRON && (
+            <div className={style('titlebar')}>
+              <div className={style('tbar-left')}></div>
+              <div className={style('tbar-right')}>
+                <Button
+                  icon="minus"
+                  onClick={() => Electron.send('minimize')}
+                />
+                <Button
+                  icon="square"
+                  onClick={() => Electron.send('toggle-maximize')}
+                />
+                <Button icon="x" onClick={() => Electron.send('close')} />
+              </div>
+            </div>
           )}
+          <div className={style('controls')}>
+            <Button
+              icon="hash"
+              className={css({
+                border: `1px solid ${
+                  showTagEditor ? '#BDBDBD' : 'transparent'
+                }`,
+              })}
+              onClick={() => setShowTagEditor(!showTagEditor)}
+              round
+            />
+            {editing && (
+              <Button icon="x" onClick={() => setEditing(null)} round />
+            )}
+          </div>
         </div>
         <div className={style('content')}>
           {showTagEditor && <TagEditor />}
