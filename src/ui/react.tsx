@@ -25,6 +25,7 @@ import {
 } from '@material-ui/core'
 import * as FeatherIcon from 'react-icons/fi'
 import * as MaterialIcon from 'react-icons/md'
+import * as BoxIcon from 'react-icons/bi'
 
 // HTML
 
@@ -43,6 +44,7 @@ const bss_icon = bem('uiicon')
 const libraries: ObjectAny = {
   feather: [FeatherIcon, 'fi'],
   material: [MaterialIcon, 'md'],
+  box: [BoxIcon, 'bi'],
 }
 
 export const Icon: FC<IIcon> = ({
@@ -55,9 +57,8 @@ export const Icon: FC<IIcon> = ({
   const lib = libraries[library] || [null, '']
   const componentName = `${lib[1]}-${name}`
     .split('-')
-    .map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase())
+    .map((word) => word && word[0].toUpperCase() + word.slice(1).toLowerCase())
     .join('')
-
   const IconElement = (lib[0] as IconElement)[componentName]
 
   return (

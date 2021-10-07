@@ -131,3 +131,9 @@
     justify-content: flex-end;
   }
 }
+
+.app--focusing .card {
+  &__corner-buttons {
+    opacity: 0;
+  }
+}

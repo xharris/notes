@@ -1,10 +1,13 @@
 .content {
   display: flex;
   align-items: flex-start;
+  height: 100%;
 
   &__editable {
     height: 100%;
     flex: 0 1 100%;
+    font-size: 0.8rem;
+    line-height: 16px;
   }
 
   &--readOnly &__editable {
@@ -25,5 +28,32 @@
   ul,
   ol {
     margin: 10px 0px;
+  }
+
+  &__ctrl-btn {
+    opacity: 0.25;
+    padding: 0px;
+    margin: 6px;
+
+    transition: all ease-in-out 0.4s;
+    transition: transform ease-in-out 0.1s;
+
+    &--enabled {
+      opacity: 0.9;
+    }
+
+    &:hover {
+      transform: scale(2);
+    }
+
+    svg {
+      color: #212121;
+    }
+  }
+}
+
+.app--focusing .content {
+  &__ctrl-btn:not(&__ctrl-btn--enabled) {
+    opacity: 0;
   }
 }

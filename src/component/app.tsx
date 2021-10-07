@@ -3,6 +3,7 @@ import React, {
   useState,
   useEffect,
   createContext,
+  useMemo,
 } from 'react'
 import { arrayMove, bem, css } from 'ui'
 import 'style/skeleton.scss'
@@ -14,6 +15,7 @@ import { AppContextProvider, useAppContext } from './context'
 import { Button } from 'ui/react'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { Electron } from 'ui/electron'
+import { FocusContextProvider, useFocusContext } from './focuscontext'
 
 const style = bem('app')
 
@@ -21,6 +23,7 @@ const AppBody = () => {
   const { db, update, useQuery } = useAppContext()
   const [showTagEditor, setShowTagEditor] = useState(false)
   const [editing, setEditing] = useState<string>()
+  const { focusing, stopFocus } = useFocusContext()
 
   // const settings = useQuery(() => db && db.table('settings'))
 
@@ -66,7 +69,10 @@ const AppBody = () => {
         }
       }}
     >
-      <div className={style({ editing: !!editing })}>
+      <div
+        className={style({ editing: !!editing, focusing })}
+        onMouseMove={() => stopFocus()}
+      >
         {/* <Nav /> */}
         <div className={style('nav')}>
           {process.env.REACT_ELECTRON && (
@@ -96,9 +102,24 @@ const AppBody = () => {
               onClick={() => setShowTagEditor(!showTagEditor)}
               round
             />
-            {editing && (
-              <Button icon="x" onClick={() => setEditing(null)} round />
-            )}
+            <div style={{ display: 'flex', gap: 5 }}>
+              {editing && (
+                <Button
+                  icon={
+                    !!document.fullscreenElement ? 'minimize2' : 'maximize2'
+                  }
+                  onClick={() => {
+                    if (!document.fullscreenElement)
+                      document.body.requestFullscreen()
+                    else document.exitFullscreen()
+                  }}
+                  round
+                />
+              )}
+              {editing && (
+                <Button icon="x" onClick={() => setEditing(null)} round />
+              )}
+            </div>
           </div>
         </div>
         <div className={style('content')}>
@@ -112,7 +133,9 @@ const AppBody = () => {
 
 // context providers here
 export const App = () => (
-  <AppContextProvider>
-    <AppBody />
-  </AppContextProvider>
+  <FocusContextProvider>
+    <AppContextProvider>
+      <AppBody />
+    </AppContextProvider>
+  </FocusContextProvider>
 )

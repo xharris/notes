@@ -1,6 +1,7 @@
 declare module 'brick.js'
 declare module 'react-pouchdb'
 declare module 'pouchdb-selector-core'
+declare module 'slate-edit-list'
 
 type Collections = 'card' | 'section' | 'tag'
 

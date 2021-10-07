@@ -1,9 +1,16 @@
+@use "sass:color";
 @import 'variables';
 
 @font-face {
   font-family: Raleway;
   src: url('./Raleway/Raleway-VariableFont_wght.ttf')
     format('truetype-variations');
+}
+
+@font-face {
+  font-family: Space;
+  src: url('./Space_Mono/SpaceMono-Regular.ttf') format('truetype');
+  font-weight: normal;
 }
 
 html,
@@ -15,7 +22,7 @@ body {
 }
 
 * {
-  font-family: Raleway, Avenir, lucida grande, tahoma, verdana, arial,
+  font-family: Courier, Space, Avenir, lucida grande, tahoma, verdana, arial,
     sans-serif;
 }
 
@@ -80,8 +87,10 @@ body {
     width: 100%;
     box-sizing: border-box;
 
+    transition: all 0.4s ease-in-out;
+
     .uibutton {
-      background: transparent; // rgba(255, 255, 255, 0.7);
+      background: color.adjust($bg, $alpha: 0.5); // rgba(255, 255, 255, 0.7);
 
       transition: all 0.4s ease-in-out;
     }
@@ -124,5 +133,12 @@ body {
 
   &__tbar-right {
     display: flex;
+    gap: 5px;
+  }
+}
+
+.app--focusing .app {
+  &__nav {
+    opacity: 0;
   }
 }
